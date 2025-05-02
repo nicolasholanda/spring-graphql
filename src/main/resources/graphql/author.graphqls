@@ -4,3 +4,8 @@ type Author {
     biography: String
     books: [Book]
 }
+
+input AddAuthorDTO {
+    name: String!
+    biography: String!
+}

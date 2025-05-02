@@ -5,3 +5,10 @@ type Book {
     publishedYear: Int
     author: Author
 }
+
+input AddBookDTO {
+    title: String!
+    isbn: String!
+    publishedYear: Int!
+    authorId: Int!
+}

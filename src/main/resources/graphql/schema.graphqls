@@ -4,3 +4,8 @@ type Query {
   bookById(id: ID!): Book,
   authorById(id: ID!): Author,
 }
+
+type Mutation {
+  addAuthor(addAuthorDTO: AddAuthorDTO!): Author,
+  addBook(addBookDTO: AddBookDTO!): Book
+}

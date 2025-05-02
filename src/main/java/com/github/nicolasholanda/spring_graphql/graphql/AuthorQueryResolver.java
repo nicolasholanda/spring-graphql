@@ -1,8 +1,10 @@
 package com.github.nicolasholanda.spring_graphql.graphql;
 
 import com.github.nicolasholanda.spring_graphql.model.Author;
+import com.github.nicolasholanda.spring_graphql.model.dto.AddAuthorDTO;
 import com.github.nicolasholanda.spring_graphql.repository.AuthorRepository;
 import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
 import org.springframework.stereotype.Controller;
 
@@ -26,5 +28,13 @@ public class AuthorQueryResolver {
     public Author authorById(@Argument("id") Long id) {
         return authorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Couldn't find book with id " + id));
+    }
+
+    @MutationMapping
+    public Author addAuthor(@Argument AddAuthorDTO addAuthorDTO) {
+        Author author = new Author();
+        author.setName(addAuthorDTO.getName());
+        author.setBiography(addAuthorDTO.getBiography());
+        return authorRepository.save(author);
     }
 }
