@@ -1,0 +1,30 @@
+package com.github.nicolasholanda.spring_graphql.graphql;
+
+import com.github.nicolasholanda.spring_graphql.model.Author;
+import com.github.nicolasholanda.spring_graphql.repository.AuthorRepository;
+import org.springframework.graphql.data.method.annotation.Argument;
+import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.stereotype.Controller;
+
+import java.util.List;
+
+@Controller
+public class AuthorQueryResolver {
+
+    private final AuthorRepository authorRepository;
+
+    public AuthorQueryResolver(AuthorRepository authorRepository) {
+        this.authorRepository = authorRepository;
+    }
+
+    @QueryMapping
+    public List<Author> authors() {
+        return authorRepository.findAll();
+    }
+
+    @QueryMapping
+    public Author authorById(@Argument("id") Long id) {
+        return authorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Couldn't find book with id " + id));
+    }
+}

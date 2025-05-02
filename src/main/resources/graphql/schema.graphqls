@@ -1,19 +1,6 @@
 type Query {
   books: [Book]
   authors: [Author]
-}
-
-type Book {
-  id: ID
-  title: String
-  isbn: String
-  publishedYear: Int
-  author: Author
-}
-
-type Author {
-  id: ID
-  name: String
-  biography: String
-  books: [Book]
+  bookById(id: ID!): Book,
+  authorById(id: ID!): Author,
 }
