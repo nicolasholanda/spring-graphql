@@ -1,0 +1,11 @@
+type Query {
+  books: [Book]
+  authors: [Author]
+  bookById(id: ID!): Book,
+  authorById(id: ID!): Author,
+}
+
+type Mutation {
+  addAuthor(addAuthorDTO: AddAuthorDTO!): Author,
+  addBook(addBookDTO: AddBookDTO!): Book
+}

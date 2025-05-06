@@ -1,0 +1,11 @@
+type Author {
+    id: ID
+    name: String
+    biography: String
+    books: [Book]
+}
+
+input AddAuthorDTO {
+    name: String!
+    biography: String!
+}
