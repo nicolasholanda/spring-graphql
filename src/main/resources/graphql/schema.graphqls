@@ -11,3 +11,7 @@ type Mutation {
   addBook(addBookDTO: AddBookDTO!): Book,
   editBook(id: ID!, editBookDTO: EditBookDTO!): Book,
 }
+
+type Subscription {
+  bookAdded: Book
+}

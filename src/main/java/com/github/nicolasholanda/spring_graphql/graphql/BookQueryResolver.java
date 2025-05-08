@@ -4,13 +4,16 @@ import com.github.nicolasholanda.spring_graphql.model.Author;
 import com.github.nicolasholanda.spring_graphql.model.Book;
 import com.github.nicolasholanda.spring_graphql.model.dto.AddBookDTO;
 import com.github.nicolasholanda.spring_graphql.model.dto.EditBookDTO;
+import com.github.nicolasholanda.spring_graphql.publisher.BookPublisher;
 import com.github.nicolasholanda.spring_graphql.repository.AuthorRepository;
 import com.github.nicolasholanda.spring_graphql.repository.BookRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
+import org.springframework.graphql.data.method.annotation.SubscriptionMapping;
 import org.springframework.stereotype.Controller;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -19,9 +22,12 @@ public class BookQueryResolver {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
+    private final BookPublisher bookPublisher;
 
-    public BookQueryResolver(BookRepository bookRepository,
+    public BookQueryResolver(BookPublisher bookPublisher,
+                             BookRepository bookRepository,
                              AuthorRepository authorRepository) {
+        this.bookPublisher = bookPublisher;
         this.bookRepository = bookRepository;
         this.authorRepository = authorRepository;
     }
@@ -48,6 +54,8 @@ public class BookQueryResolver {
         book.setPublishedYear(addBookDTO.getPublishedYear());
         book.setAuthor(author);
 
+        bookPublisher.publish(book);
+
         return bookRepository.save(book);
     }
 
@@ -63,5 +71,10 @@ public class BookQueryResolver {
         book.setPublishedYear(editBookDTO.getPublishedYear());
 
         return book;
+    }
+
+    @SubscriptionMapping
+    public Flux<Book> bookAdded() {
+        return bookPublisher.getPublisher();
     }
 }
