@@ -12,3 +12,9 @@ input AddBookDTO {
     publishedYear: Int!
     authorId: Int!
 }
+
+input EditBookDTO {
+    title: String!
+    isbn: String!
+    publishedYear: Int!
+}

@@ -7,5 +7,7 @@ type Query {
 
 type Mutation {
   addAuthor(addAuthorDTO: AddAuthorDTO!): Author,
-  addBook(addBookDTO: AddBookDTO!): Book
+  editAuthor(id: ID!, editAuthorDTO: EditAuthorDTO!): Author
+  addBook(addBookDTO: AddBookDTO!): Book,
+  editBook(id: ID!, editBookDTO: EditBookDTO!): Book,
 }

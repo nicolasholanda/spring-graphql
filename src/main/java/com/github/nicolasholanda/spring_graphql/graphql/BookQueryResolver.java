@@ -3,8 +3,10 @@ package com.github.nicolasholanda.spring_graphql.graphql;
 import com.github.nicolasholanda.spring_graphql.model.Author;
 import com.github.nicolasholanda.spring_graphql.model.Book;
 import com.github.nicolasholanda.spring_graphql.model.dto.AddBookDTO;
+import com.github.nicolasholanda.spring_graphql.model.dto.EditBookDTO;
 import com.github.nicolasholanda.spring_graphql.repository.AuthorRepository;
 import com.github.nicolasholanda.spring_graphql.repository.BookRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -47,5 +49,19 @@ public class BookQueryResolver {
         book.setAuthor(author);
 
         return bookRepository.save(book);
+    }
+
+    @Transactional
+    @MutationMapping
+    public Book editBook(@Argument("id") Long id,
+                         @Argument EditBookDTO editBookDTO) {
+        Book book = bookRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Book not found: " + id));
+
+        book.setTitle(editBookDTO.getTitle());
+        book.setIsbn(editBookDTO.getIsbn());
+        book.setPublishedYear(editBookDTO.getPublishedYear());
+
+        return book;
     }
 }

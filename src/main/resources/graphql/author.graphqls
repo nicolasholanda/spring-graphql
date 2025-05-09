@@ -9,3 +9,8 @@ input AddAuthorDTO {
     name: String!
     biography: String!
 }
+
+input EditAuthorDTO {
+    name: String!,
+    biography: String!
+}

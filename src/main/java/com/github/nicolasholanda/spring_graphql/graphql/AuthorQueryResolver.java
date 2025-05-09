@@ -2,7 +2,9 @@ package com.github.nicolasholanda.spring_graphql.graphql;
 
 import com.github.nicolasholanda.spring_graphql.model.Author;
 import com.github.nicolasholanda.spring_graphql.model.dto.AddAuthorDTO;
+import com.github.nicolasholanda.spring_graphql.model.dto.EditAuthorDTO;
 import com.github.nicolasholanda.spring_graphql.repository.AuthorRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.graphql.data.method.annotation.Argument;
 import org.springframework.graphql.data.method.annotation.MutationMapping;
 import org.springframework.graphql.data.method.annotation.QueryMapping;
@@ -36,5 +38,18 @@ public class AuthorQueryResolver {
         author.setName(addAuthorDTO.getName());
         author.setBiography(addAuthorDTO.getBiography());
         return authorRepository.save(author);
+    }
+
+    @Transactional
+    @MutationMapping
+    public Author editAuthor(@Argument("id") Long id,
+                             @Argument EditAuthorDTO editAuthorDTO) {
+        Author author = authorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Couldn't find author with id " + id));
+
+        author.setName(editAuthorDTO.getName());
+        author.setBiography(editAuthorDTO.getBiography());
+
+        return author;
     }
 }
